@@ -12,6 +12,29 @@ class Tree {
     this.arr = arr;
     this.root = buildTree(arr);
   }
+
+  insert(value, tempVariable = this.root) {
+    if (tempVariable.rightChild === null && tempVariable.leftChild === null) {
+      if (value > tempVariable.data) {
+        tempVariable.rightChild = new Node(value);
+      } else if (value < tempVariable.data) {
+        tempVariable.leftChild = new Node(value);
+      }
+      return;
+    }
+
+    if (value > tempVariable.data) {
+      tempVariable = tempVariable.rightChild;
+      this.insert(value, tempVariable);
+    } else {
+      tempVariable = tempVariable.leftChild;
+      this.insert(value, tempVariable);
+    }
+  }
+
+  delete(value, tempVariable = this.root) {
+        
+  };
 }
 
 function buildTree(array) {
@@ -62,3 +85,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     prettyPrint(node.leftChild, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 };
+
+// utility functions
+
+newTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+
+console.log(prettyPrint(newTree.root));
+
+newTree.delete(3);
+
+console.log(prettyPrint(newTree.root));
