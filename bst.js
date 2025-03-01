@@ -1,3 +1,6 @@
+console.log("Hi :)");
+
+
 // constructor classes for node and tree
 class Node {
   constructor(data, leftChild = null, rightChild = null) {
@@ -36,6 +39,9 @@ class Tree {
     let isElementFound = false;
 
     while (!isElementFound) {
+      if(tempVariable.leftChild !== null) {
+
+    
       if (
         value === tempVariable.leftChild.data &&
         tempVariable.leftChild.leftChild === null &&
@@ -55,7 +61,10 @@ class Tree {
         isElementFound = true;
         return;
       }
+    }
+      if(tempVariable.rightChild !== null) {
 
+    
       if (
         value === tempVariable.rightChild.data &&
         tempVariable.rightChild.leftChild !== null &&
@@ -75,7 +84,7 @@ class Tree {
         isElementFound = true;
         return;
       }
-
+    }
       if (
         value === tempVariable.rightChild.data &&
         tempVariable.rightChild.rightChild === null &&
@@ -160,9 +169,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 newTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 console.log(prettyPrint(newTree.root));
 
-newTree.deleteItem(1);
-// newTree.deleteItem(3);
-newTree.deleteItem(6);
+// newTree.deleteItem(14);
+// newTree.deleteItem(8);
+// newTree.deleteItem(13);
+// newTree.deleteItem(9);
 
 
 console.log(prettyPrint(newTree.root));
