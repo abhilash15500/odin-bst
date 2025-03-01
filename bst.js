@@ -32,9 +32,76 @@ class Tree {
     }
   }
 
-  delete(value, tempVariable = this.root) {
-        
-  };
+  deleteItem(value, tempVariable = this.root) {
+    let isElementFound = false;
+
+    while (!isElementFound) {
+      if (
+        value === tempVariable.leftChild.data &&
+        tempVariable.leftChild.leftChild === null &&
+        tempVariable.leftChild.rightChild !== null
+      ) {
+        tempVariable.leftChild = tempVariable.leftChild.rightChild;
+        isElementFound = true;
+        return;
+      }
+
+      if (
+        value === tempVariable.leftChild.data &&
+        tempVariable.leftChild.leftChild !== null &&
+        tempVariable.leftChild.rightChild === null
+      ) {
+        tempVariable.leftChild = tempVariable.leftChild.leftChild;
+        isElementFound = true;
+        return;
+      }
+
+      if (
+        value === tempVariable.rightChild.data &&
+        tempVariable.rightChild.leftChild !== null &&
+        tempVariable.rightChild.rightChild === null
+      ) {
+        tempVariable.rightChild = tempVariable.rightChild.leftChild;
+        isElementFound = true;
+        return;
+      }
+
+      if (
+        value === tempVariable.rightChild.data &&
+        tempVariable.rightChild.leftChild === null &&
+        tempVariable.rightChild.rightChild !== null
+      ) {
+        tempVariable.rightChild = tempVariable.rightChild.rightChild;
+        isElementFound = true;
+        return;
+      }
+
+      if (
+        value === tempVariable.rightChild.data &&
+        tempVariable.rightChild.rightChild === null &&
+        tempVariable.rightChild.leftChild === null
+      ) {
+        tempVariable.rightChild = null;
+        isElementFound = true;
+        return;
+      }
+
+      if (
+        value === tempVariable.leftChild.data &&
+        tempVariable.leftChild.rightChild === null &&
+        tempVariable.leftChild.leftChild === null
+      ) {
+        tempVariable.leftChild = null;
+        isElementFound = true;
+        return;
+      }
+      if (value > tempVariable.data) {
+        tempVariable = tempVariable.rightChild;
+      } else if (value < tempVariable.data) {
+        tempVariable = tempVariable.leftChild;
+      }
+    }
+  }
 }
 
 function buildTree(array) {
@@ -72,6 +139,8 @@ function buildTree(array) {
   return root;
 }
 
+// utility functions
+
 // pretty print function to visualize the tree
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
@@ -86,12 +155,14 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-// utility functions
+// initializing the application!!!!!!!!
 
 newTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
-
 console.log(prettyPrint(newTree.root));
 
-newTree.delete(3);
+newTree.deleteItem(1);
+// newTree.deleteItem(3);
+newTree.deleteItem(6);
+
 
 console.log(prettyPrint(newTree.root));
