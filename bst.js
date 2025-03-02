@@ -74,18 +74,45 @@ class Tree {
 
     while (!isElementFound) {
       if(tempVariable.leftChild !== null) {
+
+
+
+    //      //for inorder successor 
+
+    //   if (
+    //     value === tempVariable.data &&
+    //     tempVariable.leftChild !== null &&
+    //     tempVariable.rightChild !== null
+    //   ) {
+    //         let inOrderSuccessor;
+    //         let tempVariableForInorderSuccessor = tempVariable.rightChild;
+    //         let isInOrderSuccessorFound = false;
+
+    //         while(!isInOrderSuccessorFound) {
+    //           if(tempVariableForInorderSuccessor.leftChild === null) {
+    //             tempVariable.data = tempVariableForInorderSuccessor.data;
+    //             inOrderSuccessor = tempVariableForInorderSuccessor.data;
+    //             isInOrderSuccessorFound = true;
+              
+    //             return;
+    //           }
+    //           if(tempVariableForInorderSuccessor.leftChild !== null) {
+    //           tempVariableForInorderSuccessor = tempVariableForInorderSuccessor.leftChild;
+    //         } };
+
+    //       }
     
-     if(value === tempVariable.leftChild.data && tempVariable.leftChild.leftChild !== null && tempVariable.leftChild.rightChild !== null) {
-              let tempVariableForInorderSuccessor = tempVariable.leftChild;
-              while(!isElementFoundForInorderSuccessor) {
-                if(tempVariableForInorderSuccessor.leftChild !== null){
-                  tempVariableForInorderSuccessor =tempVariableForInorderSuccessor.leftChild;
-                }
-                if(tempVariableForInorderSuccessor.leftChild === null) {
+    //  if(value === tempVariable.leftChild.data && tempVariable.leftChild.leftChild !== null && tempVariable.leftChild.rightChild !== null) {
+    //           let tempVariableForInorderSuccessor = tempVariable.leftChild;
+    //           while(!isElementFoundForInorderSuccessor) {
+    //             if(tempVariableForInorderSuccessor.leftChild !== null){
+    //               tempVariableForInorderSuccessor =tempVariableForInorderSuccessor.leftChild;
+    //             }
+    //             if(tempVariableForInorderSuccessor.leftChild === null) {
                   
-                }
-              }
-     }
+    //             }
+    //           }
+    //  }
       
 
       // for single child deletion
@@ -113,14 +140,12 @@ class Tree {
 
 
       if(tempVariable.rightChild !== null) {   //////
-
-      
       //for inorder successor 
 
       if (
         value === tempVariable.data &&
-        tempVariable.rightChild.leftChild !== null &&
-        tempVariable.rightChild.rightChild !== null
+        tempVariable.leftChild !== null &&
+        tempVariable.rightChild !== null
       ) {
             let inOrderSuccessor;
             let tempVariableForInorderSuccessor = tempVariable.rightChild;
@@ -129,14 +154,17 @@ class Tree {
             while(!isInOrderSuccessorFound) {
               if(tempVariableForInorderSuccessor.leftChild === null) {
                 tempVariable.data = tempVariableForInorderSuccessor.data;
+
+                if(tempVariableForInorderSuccessor.rightChild !== null) {
+                  tempVariableForInorderSuccessor = tempVariableForInorderSuccessor.rightChild;
+                }
                 inOrderSuccessor = tempVariableForInorderSuccessor.data;
+                
                 isInOrderSuccessorFound = true;
               
                 return;
               }
               if(tempVariableForInorderSuccessor.leftChild !== null) {
-
-             
               tempVariableForInorderSuccessor = tempVariableForInorderSuccessor.leftChild;
             } };
 
@@ -249,8 +277,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 // initializing the application!!!!!!!!
 
-let newTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+// let newTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+let newTree = new Tree([23, 67, 12, 89, 45, 78, 56, 34, 90, 21, 
+  43, 31, 77])
 console.log(prettyPrint(newTree.root));
-newTree.deleteItem(11);
+newTree.deleteItem(45);
 console.log(prettyPrint(newTree.root));
 
