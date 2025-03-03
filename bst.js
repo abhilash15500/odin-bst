@@ -33,15 +33,10 @@ class Tree {
   }
 
   removeDuplicate(value, tempVariable = this.root) {
-    let isDuplicateRemoved = true;
+    let isDuplicateRemoved = false;
 
     while (!isDuplicateRemoved) {
-      if (
-        tempVariable.rightChild.data === value &&
-        tempVariable.rightChild.leftChild === null &&
-        tempVariable.rightChild.rightChild !== null
-      ) {
-      } else if (
+       if (
         tempVariable.leftChild.data === value &&
         tempVariable.leftChild.leftChild === null &&
         tempVariable.leftChild.rightChild !== null
@@ -51,8 +46,39 @@ class Tree {
         isDuplicateRemoved = true;
         return;
       }
+      else if (
+        tempVariable.leftChild.data === value &&
+        tempVariable.leftChild.leftChild === null &&
+        tempVariable.leftChild.rightChild === null
+      ) {
+        tempVariable.leftChild = null;
 
-      if (value > tempVariable.data) {
+        isDuplicateRemoved = true;
+        return;
+      }
+
+      else if (
+        tempVariable.rightChild.data === value &&
+        tempVariable.rightChild.leftChild === null &&
+        tempVariable.rightChild.rightChild !== null
+      ) {
+        tempVariable.rightChild = tempVariable.leftChild.rightChild;
+
+        isDuplicateRemoved = true;
+        return;
+      }
+      else if (
+        tempVariable.rightChild.data === value &&
+        tempVariable.rightChild.leftChild === null &&
+        tempVariable.rightChild.rightChild === null
+      ) {
+        tempVariable.rightChild = null;
+
+        isDuplicateRemoved = true;
+        return;
+      }
+     
+      if (value >= tempVariable.data) {
         tempVariable = tempVariable.rightChild;
       } else if (value < tempVariable.data) {
         tempVariable = tempVariable.leftChild;
@@ -64,6 +90,9 @@ class Tree {
     let isElementFound = false;
 
     while (!isElementFound) {
+      if(tempVariable.leftChild === null && tempVariable.rightChild === null && isElementFound === false) {
+          throw new Error("Element not found");
+      };
       if (tempVariable.leftChild !== null) {
         // for single child deletion
 
@@ -106,11 +135,11 @@ class Tree {
               tempVariable.data = tempVariableForInorderSuccessor.data;
 
               if (tempVariableForInorderSuccessor.rightChild !== null) {
-                inOrderSuccessor = tempVariableForInorderSuccessor.data;
-
+                
                 tempVariableForInorderSuccessor =
                   tempVariableForInorderSuccessor.rightChild;
               }
+              inOrderSuccessor = tempVariableForInorderSuccessor.data;
 
               console.log(`this is ${inOrderSuccessor} lol`);
               this.removeDuplicate(inOrderSuccessor);
@@ -231,5 +260,5 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 let newTree = new Tree([23, 67, 12, 89, 45, 78, 56, 34, 90, 21, 43, 31, 77]);
 console.log(prettyPrint(newTree.root));
-newTree.deleteItem(45);
+newTree.deleteItem(999);
 console.log(prettyPrint(newTree.root));
