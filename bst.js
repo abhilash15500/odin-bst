@@ -1,6 +1,3 @@
-console.log("Hi :)");
-
-
 // constructor classes for node and tree
 class Node {
   constructor(data, leftChild = null, rightChild = null) {
@@ -35,164 +32,122 @@ class Tree {
     }
   }
 
-  removeDuplicateItem(value,tempVariable = this.root) {
-    let count = 0;
-    let isDuplicateRemoved =false;
+  removeDuplicate(value, tempVariable = this.root) {
+    let isDuplicateRemoved = true;
 
-    while(!isDuplicateRemoved) {
-      if(tempVariable.leftChild.data === value && count === 1) {
-        tempVariable.leftChild = null;
-        isDuplicateRemoved = true;
-        return;
-
-      } 
-
-      else if (tempVariable.rightChild.data === value && count === 1) {
-        tempVariable.rightChild = null;
-        isDuplicateRemoved = true;
-        return;
-      }
-
-      if(value === tempVariable.data && count === 0) {
-        count = count+1;
-      } 
-
-      if(value > tempVariable.data) {
-        tempVariable = tempVariable.rightChild;
-      }
-      else if (value < tempVariable.data) {
-        tempVariable = tempVariable.leftChild;
-      }
-    }
-
-  }
-
-  deleteItem(value, tempVariable = this.root) {
-
-
-    let isElementFound = false;
-
-    while (!isElementFound) {
-      if(tempVariable.leftChild !== null) {
-
-
-
-    //      //for inorder successor 
-
-    //   if (
-    //     value === tempVariable.data &&
-    //     tempVariable.leftChild !== null &&
-    //     tempVariable.rightChild !== null
-    //   ) {
-    //         let inOrderSuccessor;
-    //         let tempVariableForInorderSuccessor = tempVariable.rightChild;
-    //         let isInOrderSuccessorFound = false;
-
-    //         while(!isInOrderSuccessorFound) {
-    //           if(tempVariableForInorderSuccessor.leftChild === null) {
-    //             tempVariable.data = tempVariableForInorderSuccessor.data;
-    //             inOrderSuccessor = tempVariableForInorderSuccessor.data;
-    //             isInOrderSuccessorFound = true;
-              
-    //             return;
-    //           }
-    //           if(tempVariableForInorderSuccessor.leftChild !== null) {
-    //           tempVariableForInorderSuccessor = tempVariableForInorderSuccessor.leftChild;
-    //         } };
-
-    //       }
-    
-    //  if(value === tempVariable.leftChild.data && tempVariable.leftChild.leftChild !== null && tempVariable.leftChild.rightChild !== null) {
-    //           let tempVariableForInorderSuccessor = tempVariable.leftChild;
-    //           while(!isElementFoundForInorderSuccessor) {
-    //             if(tempVariableForInorderSuccessor.leftChild !== null){
-    //               tempVariableForInorderSuccessor =tempVariableForInorderSuccessor.leftChild;
-    //             }
-    //             if(tempVariableForInorderSuccessor.leftChild === null) {
-                  
-    //             }
-    //           }
-    //  }
-      
-
-      // for single child deletion
-    
+    while (!isDuplicateRemoved) {
       if (
-        value === tempVariable.leftChild.data &&
+        tempVariable.rightChild.data === value &&
+        tempVariable.rightChild.leftChild === null &&
+        tempVariable.rightChild.rightChild !== null
+      ) {
+      } else if (
+        tempVariable.leftChild.data === value &&
         tempVariable.leftChild.leftChild === null &&
         tempVariable.leftChild.rightChild !== null
       ) {
         tempVariable.leftChild = tempVariable.leftChild.rightChild;
-        isElementFound = true;
+
+        isDuplicateRemoved = true;
         return;
       }
 
-      if (
-        value === tempVariable.leftChild.data &&
-        tempVariable.leftChild.leftChild !== null &&
-        tempVariable.leftChild.rightChild === null
-      ) {
-        tempVariable.leftChild = tempVariable.leftChild.leftChild;
-        isElementFound = true;
-        return;
+      if (value > tempVariable.data) {
+        tempVariable = tempVariable.rightChild;
+      } else if (value < tempVariable.data) {
+        tempVariable = tempVariable.leftChild;
       }
     }
+  }
 
+  deleteItem(value, tempVariable = this.root) {
+    let isElementFound = false;
 
-      if(tempVariable.rightChild !== null) {   //////
-      //for inorder successor 
+    while (!isElementFound) {
+      if (tempVariable.leftChild !== null) {
+        // for single child deletion
 
-      if (
-        value === tempVariable.data &&
-        tempVariable.leftChild !== null &&
-        tempVariable.rightChild !== null
-      ) {
-            let inOrderSuccessor;
-            let tempVariableForInorderSuccessor = tempVariable.rightChild;
-            let isInOrderSuccessorFound = false;
+        if (
+          value === tempVariable.leftChild.data &&
+          tempVariable.leftChild.leftChild === null &&
+          tempVariable.leftChild.rightChild !== null
+        ) {
+          tempVariable.leftChild = tempVariable.leftChild.rightChild;
+          isElementFound = true;
+          return;
+        }
 
-            while(!isInOrderSuccessorFound) {
-              if(tempVariableForInorderSuccessor.leftChild === null) {
-                tempVariable.data = tempVariableForInorderSuccessor.data;
+        if (
+          value === tempVariable.leftChild.data &&
+          tempVariable.leftChild.leftChild !== null &&
+          tempVariable.leftChild.rightChild === null
+        ) {
+          tempVariable.leftChild = tempVariable.leftChild.leftChild;
+          isElementFound = true;
+          return;
+        }
+      }
 
-                if(tempVariableForInorderSuccessor.rightChild !== null) {
-                  tempVariableForInorderSuccessor = tempVariableForInorderSuccessor.rightChild;
-                }
+      if (tempVariable.rightChild !== null) {
+        //////
+        //for inorder successor
+
+        if (
+          value === tempVariable.data &&
+          tempVariable.leftChild !== null &&
+          tempVariable.rightChild !== null
+        ) {
+          let inOrderSuccessor;
+          let tempVariableForInorderSuccessor = tempVariable.rightChild;
+          let isInOrderSuccessorFound = false;
+
+          while (!isInOrderSuccessorFound) {
+            if (tempVariableForInorderSuccessor.leftChild === null) {
+              tempVariable.data = tempVariableForInorderSuccessor.data;
+
+              if (tempVariableForInorderSuccessor.rightChild !== null) {
                 inOrderSuccessor = tempVariableForInorderSuccessor.data;
-                
-                isInOrderSuccessorFound = true;
-              
-                return;
+
+                tempVariableForInorderSuccessor =
+                  tempVariableForInorderSuccessor.rightChild;
               }
-              if(tempVariableForInorderSuccessor.leftChild !== null) {
-              tempVariableForInorderSuccessor = tempVariableForInorderSuccessor.leftChild;
-            } };
 
+              console.log(`this is ${inOrderSuccessor} lol`);
+              this.removeDuplicate(inOrderSuccessor);
 
+              isInOrderSuccessorFound = true;
+
+              return;
+            }
+            if (tempVariableForInorderSuccessor.leftChild !== null) {
+              tempVariableForInorderSuccessor =
+                tempVariableForInorderSuccessor.leftChild;
+            }
+          }
+        }
+        //
+        if (
+          value === tempVariable.rightChild.data &&
+          tempVariable.rightChild.leftChild !== null &&
+          tempVariable.rightChild.rightChild === null
+        ) {
+          tempVariable.rightChild = tempVariable.rightChild.leftChild;
+          isElementFound = true;
+          return;
+        }
+
+        if (
+          value === tempVariable.rightChild.data &&
+          tempVariable.rightChild.leftChild === null &&
+          tempVariable.rightChild.rightChild !== null
+        ) {
+          tempVariable.rightChild = tempVariable.rightChild.rightChild;
+          isElementFound = true;
+          return;
+        }
       }
-//
-      if (
-        value === tempVariable.rightChild.data &&
-        tempVariable.rightChild.leftChild !== null &&
-        tempVariable.rightChild.rightChild === null
-      ) {
-        tempVariable.rightChild = tempVariable.rightChild.leftChild;
-        isElementFound = true;
-        return;
-      }
 
-      if (
-        value === tempVariable.rightChild.data &&
-        tempVariable.rightChild.leftChild === null &&
-        tempVariable.rightChild.rightChild !== null
-      ) {
-        tempVariable.rightChild = tempVariable.rightChild.rightChild;
-        isElementFound = true;
-        return;
-      }
-    }
-
-    //for leaf (no child nodes) deletion
+      //for leaf (no child nodes) deletion
       if (
         value === tempVariable.rightChild.data &&
         tempVariable.rightChild.rightChild === null &&
@@ -219,9 +174,6 @@ class Tree {
       }
     }
   }
-
-
-
 }
 
 function buildTree(array) {
@@ -277,10 +229,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 // initializing the application!!!!!!!!
 
-// let newTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
-let newTree = new Tree([23, 67, 12, 89, 45, 78, 56, 34, 90, 21, 
-  43, 31, 77])
+let newTree = new Tree([23, 67, 12, 89, 45, 78, 56, 34, 90, 21, 43, 31, 77]);
 console.log(prettyPrint(newTree.root));
 newTree.deleteItem(45);
 console.log(prettyPrint(newTree.root));
-
