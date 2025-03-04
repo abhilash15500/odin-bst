@@ -1,4 +1,5 @@
 // constructor classes for node and tree
+
 class Node {
   constructor(data, leftChild = null, rightChild = null) {
     this.leftChild = leftChild;
@@ -216,6 +217,47 @@ class Tree {
     }
     throw new Error("Element not found!");
   }
+
+  levelOrder(callback) {
+    let queue = [];
+    let isLevelOrderDone = false;
+
+    if (!callback) {
+      throw new Error("Please provide a callback function");
+    }
+    if (this.root === null) {
+      return;
+    }
+    if (this.root !== null) {
+      queue.push(this.root.data);
+    }
+
+    while (!isLevelOrderDone) {
+      if (queue.length === 0) {
+        isLevelOrderDone = true;
+        return;
+      }
+
+      if (queue.length !== 0) {
+        let newDiscoveredNode = this.find(queue.shift());
+        callback(newDiscoveredNode);
+        if (newDiscoveredNode.leftChild !== null) {
+          queue.push(newDiscoveredNode.leftChild.data);
+        }
+        if (newDiscoveredNode.rightChild !== null) {
+          queue.push(newDiscoveredNode.rightChild.data);
+        }
+        console.log(queue);
+        
+
+      }
+     
+    }
+  }
+}
+
+function callback(newDiscoveredNode) {
+  console.log(`printing discovered node ${newDiscoveredNode.data}`);
 }
 
 function buildTree(array) {
@@ -270,10 +312,11 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 // initializing the application!!!!!!!!
+//testing
 
-let newTree = new Tree([23, 67, 12, 89, 45, 78, 56, 34, 90, 21, 43, 31, 77]);
-console.log(prettyPrint(newTree.root));
-console.log(newTree.find(34));
+let newTree = new Tree([23, 67, 90, 55, 1, 21, 43, 31, 77]);
+// console.log(prettyPrint(newTree.root));
 
+console.log(newTree.levelOrder(callback));
 
 console.log(prettyPrint(newTree.root));
