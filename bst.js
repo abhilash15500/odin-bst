@@ -222,14 +222,15 @@ class Tree {
     let queue = [];
     let isLevelOrderDone = false;
 
-    if (!callback) {
-      throw new Error("Please provide a callback function");
+    if (typeof callback !== "function") {
+      throw new Error("Please provide a valid callback function");
     }
+    
     if (this.root === null) {
       return;
     }
     if (this.root !== null) {
-      queue.push(this.root.data);
+      queue.push(this.root);
     }
 
     while (!isLevelOrderDone) {
@@ -239,20 +240,78 @@ class Tree {
       }
 
       if (queue.length !== 0) {
-        let newDiscoveredNode = this.find(queue.shift());
+        let newDiscoveredNode = queue[0];
         callback(newDiscoveredNode);
+
         if (newDiscoveredNode.leftChild !== null) {
-          queue.push(newDiscoveredNode.leftChild.data);
+          queue.push(newDiscoveredNode.leftChild);
         }
         if (newDiscoveredNode.rightChild !== null) {
-          queue.push(newDiscoveredNode.rightChild.data);
+          queue.push(newDiscoveredNode.rightChild);
         }
         console.log(queue);
-        
-
+        queue.shift();
       }
-     
     }
+  }
+}
+
+function preOrder(node, callback) {
+  if (typeof callback !== "function") {
+    throw new Error("Please provide a valid callback function");
+  }
+  
+
+  if (node === null) {
+    return;
+  }
+
+  callback(node);
+  if (node.leftChild !== null) {
+    preOrder(node.leftChild, callback);
+  }
+  if (node.rightChild !== null) {
+    preOrder(node.rightChild, callback);
+  }
+}
+
+function postOrder(node, callback) {
+  if (typeof callback !== "function") {
+    throw new Error("Please provide a valid callback function");
+  }
+  
+
+  if (node === null) {
+    return;
+  }
+
+  if (node.leftChild !== null) {
+    postOrder(node.leftChild, callback);
+  }
+
+  if (node.rightChild !== null) {
+    postOrder(node.rightChild, callback);
+  }
+  callback(node);
+}
+
+function inOrder(node, callback) {
+  if (typeof callback !== "function") {
+    throw new Error("Please provide a valid callback function");
+  }
+  
+
+  if (node === null) {
+    return;
+  }
+
+  if (node.leftChild !== null) {
+    inOrder(node.leftChild, callback);
+  }
+  callback(node);
+
+  if (node.rightChild !== null) {
+    inOrder(node.rightChild, callback);
   }
 }
 
@@ -314,9 +373,11 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([23, 67, 90, 55, 1, 21, 43, 31, 77]);
+let newTree = new Tree([20, 10, 30, 100, 300, 200, 150]);
 // console.log(prettyPrint(newTree.root));
 
-console.log(newTree.levelOrder(callback));
+console.log(preOrder(newTree.root, callback));
+console.log(postOrder(newTree.root, callback));
+console.log(inOrder(newTree.root, callback));
 
 console.log(prettyPrint(newTree.root));
