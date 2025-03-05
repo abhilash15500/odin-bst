@@ -225,7 +225,7 @@ class Tree {
     if (typeof callback !== "function") {
       throw new Error("Please provide a valid callback function");
     }
-    
+
     if (this.root === null) {
       return;
     }
@@ -256,18 +256,90 @@ class Tree {
   }
 
   height(node) {
-        if(node === null) {
-          return -1;
-        }
-        return Math.max(this.height(node.leftChild),this.height(node.rightChild))+1;
+    if (node === null) {
+      return -1;
+    }
+    return (
+      Math.max(this.height(node.leftChild), this.height(node.rightChild)) + 1
+    );
+  }
+
+  depth(node) {
+    let isDepthFound = false;
+    let depthCount = 0;
+    let tempVariable = this.root;
+    while (!isDepthFound) {
+      console.log(node);
+
+      if (node === this.root) {
+        isDepthFound = true;
+        return depthCount;
       }
+      if (node === tempVariable.rightChild) {
+        isDepthFound = true;
+        return depthCount + 1;
+      }
+      if (node === tempVariable.leftChild) {
+        isDepthFound = true;
+        return depthCount + 1;
+      }
+
+      if (node.data > tempVariable.data) {
+        tempVariable = tempVariable.rightChild;
+        depthCount = depthCount + 1;
+      } else if (node.data < tempVariable.data) {
+        tempVariable = tempVariable.leftChild;
+        depthCount = depthCount + 1;
+      }
+    }
+  }
+
+  isBalanced() {
+    let leftSubTreeHeight = this.height(this.root.leftChild);
+    let rightSubTreeHeight = this.height(this.root.rightChild);
+
+    let differenceOfHeight = Math.abs(leftSubTreeHeight - rightSubTreeHeight);
+    if (differenceOfHeight > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  rebalance() {
+
+    if(this.isBalanced()) {
+      return "This tree is already balanced";
+    }
+    else {
+        let arr = preOrderForRebalanceMethod(this.root);
+        
+        this.arr = arr;
+        this.root = buildTree(arr);
+    }
 }
+}
+
+function preOrderForRebalanceMethod(node,arr = []) {
+  if (node === null) { 
+  }
+ 
+  arr.push(node.data);
+  if (node.leftChild !== null) {
+    preOrderForRebalanceMethod(node.leftChild,arr);
+  }
+  if (node.rightChild !== null) {
+    preOrderForRebalanceMethod(node.rightChild,arr);
+  }
+
+ return arr;
+}
+
 
 function preOrder(node, callback) {
   if (typeof callback !== "function") {
     throw new Error("Please provide a valid callback function");
   }
-  
 
   if (node === null) {
     return;
@@ -286,7 +358,6 @@ function postOrder(node, callback) {
   if (typeof callback !== "function") {
     throw new Error("Please provide a valid callback function");
   }
-  
 
   if (node === null) {
     return;
@@ -306,7 +377,6 @@ function inOrder(node, callback) {
   if (typeof callback !== "function") {
     throw new Error("Please provide a valid callback function");
   }
-  
 
   if (node === null) {
     return;
@@ -325,6 +395,10 @@ function inOrder(node, callback) {
 function callback(newDiscoveredNode) {
   console.log(`printing discovered node ${newDiscoveredNode.data}`);
 }
+
+function callbackForRebalance(node,arr) {
+    arr.push(node.data);
+};
 
 function buildTree(array) {
   // sorting the array as well as removing the duplicates for creating a bst later
@@ -380,15 +454,14 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([20, 10, 30, 100, 300, 200, 150,5,2,77,22,99,64,34,112,5]);
-// console.log(prettyPrint(newTree.root));
+let newTree = new Tree([
+  20, 10,22,34, 112, 5,
+]);
 
-console.log(preOrder(newTree.root, callback));
-console.log(postOrder(newTree.root, callback));
-console.log(inOrder(newTree.root, callback));
-
-
-let newNode = newTree.find(112);
-console.log(newTree.height(newNode));
-
+console.log(prettyPrint(newTree.root));
+console.log(newTree.isBalanced());
+newTree.deleteItem(5);
+newTree.deleteItem(10);
+console.log(newTree.isBalanced());
+console.log(newTree.rebalance())
 console.log(prettyPrint(newTree.root));
