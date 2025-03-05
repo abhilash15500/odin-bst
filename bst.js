@@ -254,6 +254,13 @@ class Tree {
       }
     }
   }
+
+  height(node) {
+        if(node === null) {
+          return -1;
+        }
+        return Math.max(this.height(node.leftChild),this.height(node.rightChild))+1;
+      }
 }
 
 function preOrder(node, callback) {
@@ -373,11 +380,15 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([20, 10, 30, 100, 300, 200, 150]);
+let newTree = new Tree([20, 10, 30, 100, 300, 200, 150,5,2,77,22,99,64,34,112,5]);
 // console.log(prettyPrint(newTree.root));
 
 console.log(preOrder(newTree.root, callback));
 console.log(postOrder(newTree.root, callback));
 console.log(inOrder(newTree.root, callback));
+
+
+let newNode = newTree.find(112);
+console.log(newTree.height(newNode));
 
 console.log(prettyPrint(newTree.root));
