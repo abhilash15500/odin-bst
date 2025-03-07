@@ -14,8 +14,9 @@ class Tree {
 
   insert(value, tempVariable = this.root) {
     //fix this asap
-    if(tempVariable.data === null) {
-      tempVariable.data = value;
+    if(tempVariable === null) {
+      this.root = new Node(value);
+      return;
     }
     //fix this above code  asap ------------------- AAAAAAAAAAAA
 
@@ -97,13 +98,60 @@ class Tree {
   deleteItem(value, tempVariable = this.root) {
     let isElementFound = false;
 
+    // inorder successor for root node 
     
-    while (!isElementFound) {
+    if(tempVariable.rightChild !== null && tempVariable.leftChild !== null && tempVariable.data === value
+    ) {
+      if (
+        value === tempVariable.data &&
+        tempVariable.leftChild !== null &&
+        tempVariable.rightChild !== null
+      ) {
+        let inOrderSuccessor;
+        let tempVariableForInorderSuccessor = tempVariable.rightChild;
+        let isInOrderSuccessorFound = false;
 
+        while (!isInOrderSuccessorFound) {
+          // Find the leftmost node in the right subtree (in-order successor)
+          if (tempVariableForInorderSuccessor.leftChild === null) {
+            this.root.data= tempVariableForInorderSuccessor.data;
+
+            // If in-order successor has a right child, adjust the reference
+            if (tempVariableForInorderSuccessor.rightChild !== null) {
+              tempVariableForInorderSuccessor =
+                tempVariableForInorderSuccessor.rightChild;
+            }
+            inOrderSuccessor = tempVariableForInorderSuccessor.data;
+
+            console.log(`this is ${inOrderSuccessor} lol`);
+            this.removeDuplicate(inOrderSuccessor);
+
+            isInOrderSuccessorFound = true;
+            return;
+          }
+
+          // Continue searching for the in-order successor
+          if (tempVariableForInorderSuccessor.leftChild !== null) {
+            tempVariableForInorderSuccessor =
+              tempVariableForInorderSuccessor.leftChild;
+          }
+        }
+      }
+
+
+    }
+      
     
+    // it ends here
+
+    while (!isElementFound) {
+    
+    
+    
+
     if(tempVariable.rightChild === null && tempVariable.leftChild === null && tempVariable.data === value
     ) {
-      tempVariable.data = null;
+      this.root = null;
       
       return;
     }
@@ -117,7 +165,7 @@ class Tree {
         throw new Error("Element not found");
       }
 
-      if(tempVariable.root === null) {
+      if(tempVariable === null) {
         throw new Error("The tree is empty!")
       }
       
@@ -493,19 +541,16 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([4]);
+let newTree = new Tree([4,5,1,5,66,33,74,43,75,346,7,18.7,466,3343,6530,1,30,34,62,29,2]);
 
 prettyPrint(newTree.root);
+
 console.log(newTree.root);
 
 console.log("-----------------");
-newTree.deleteItem(4);
-newTree.insert(4);
-newTree.insert(5);
-newTree.insert(6)
-newTree.insert(2)
-newTree.deleteItem(2);
+
+newTree.deleteItem(34)
+
+
 console.log(newTree.isBalanced())
-
-
 prettyPrint(newTree.root);
