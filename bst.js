@@ -13,7 +13,22 @@ class Tree {
   }
 
   insert(value, tempVariable = this.root) {
+      
+  if(this.findBooleanValueForOtherMethods(value) === true) {
+    throw new Error("The value already exists in the tree")
+    
+  }
+  else if (this.findBooleanValueForOtherMethods(value) === false )
+{
+  console.log(`Inserting the value ${value} with insert method in the tree`);
+  
+}   
+// Proceed with insertion
+
+
+  
     //fix this asap
+    
     if(tempVariable === null) {
       this.root = new Node(value);
       return;
@@ -96,6 +111,20 @@ class Tree {
   }
 
   deleteItem(value, tempVariable = this.root) {
+//checking if the element exists or not 
+    if(this.findBooleanValueForOtherMethods(value) === true) {
+      console.log(`deleting the value ${value} with delete method in the tree`);
+      
+      
+    }
+    else if (this.findBooleanValueForOtherMethods(value) === false )
+  {
+    throw new Error("The value doesnt exists in the tree")
+    
+  }   
+//
+
+
     let isElementFound = false;
 
     // inorder successor for root node 
@@ -305,6 +334,20 @@ class Tree {
       }
     }
     throw new Error("Element not found!");
+  }
+
+  findBooleanValueForOtherMethods(value, tempVariable = this.root) {
+    while (tempVariable !== null) {
+      if (value === tempVariable.data) {
+        return true;
+      }
+      if (value > tempVariable.data) {
+        tempVariable = tempVariable.rightChild;
+      } else {
+        tempVariable = tempVariable.leftChild;
+      }
+    }
+   return false;
   }
 
   levelOrder(callback) {
@@ -545,12 +588,14 @@ let newTree = new Tree([4,5,1,5,66,33,74,43,75,346,7,18.7,466,3343,6530,1,30,34,
 
 prettyPrint(newTree.root);
 
-console.log(newTree.root);
+// console.log(newTree.root);
 
 console.log("-----------------");
 
 newTree.deleteItem(34)
 
+newTree.deleteItem(43);
 
 console.log(newTree.isBalanced())
 prettyPrint(newTree.root);
+
