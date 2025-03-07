@@ -1,5 +1,3 @@
-// constructor classes for node and tree
-
 class Node {
   constructor(data, leftChild = null, rightChild = null) {
     this.leftChild = leftChild;
@@ -15,6 +13,12 @@ class Tree {
   }
 
   insert(value, tempVariable = this.root) {
+    //fix this asap
+    if(tempVariable.data === null) {
+      tempVariable.data = value;
+    }
+    //fix this above code  asap ------------------- AAAAAAAAAAAA
+
     if (tempVariable.rightChild === null && tempVariable.leftChild === null) {
       if (value > tempVariable.data) {
         tempVariable.rightChild = new Node(value);
@@ -24,6 +28,13 @@ class Tree {
       return;
     }
 
+    if(value > tempVariable.data && tempVariable.rightChild === null) {
+        tempVariable.rightChild = new Node(value);
+    }
+    else if (value < tempVariable.data && tempVariable.leftChild === null) {
+      tempVariable.leftChild = new Node(value);
+    }
+    
     if (value > tempVariable.data) {
       tempVariable = tempVariable.rightChild;
       this.insert(value, tempVariable);
@@ -86,17 +97,34 @@ class Tree {
   deleteItem(value, tempVariable = this.root) {
     let isElementFound = false;
 
+    
     while (!isElementFound) {
+
+    
+    if(tempVariable.rightChild === null && tempVariable.leftChild === null && tempVariable.data === value
+    ) {
+      tempVariable.data = null;
+      
+      return;
+    }
+     
+      // If reached a leaf node and the element is not found, throw an error
       if (
         tempVariable.leftChild === null &&
         tempVariable.rightChild === null &&
-        isElementFound === false
+        isElementFound === false 
       ) {
         throw new Error("Element not found");
       }
-      if (tempVariable.leftChild !== null) {
-        // for single child deletion
 
+      if(tempVariable.root === null) {
+        throw new Error("The tree is empty!")
+      }
+      
+
+      // Check if left child exists
+      if (tempVariable.leftChild !== null) {
+        // Case 1: Single child deletion (left child exists, right child does not)
         if (
           value === tempVariable.leftChild.data &&
           tempVariable.leftChild.leftChild === null &&
@@ -107,6 +135,7 @@ class Tree {
           return;
         }
 
+        // Case 2: Single child deletion (right child exists, left child does not)
         if (
           value === tempVariable.leftChild.data &&
           tempVariable.leftChild.leftChild !== null &&
@@ -118,10 +147,9 @@ class Tree {
         }
       }
 
+      // Check if right child exists
       if (tempVariable.rightChild !== null) {
-        //////
-        //for inorder successor
-
+        // Case 3: Node with two children (in-order successor replacement)
         if (
           value === tempVariable.data &&
           tempVariable.leftChild !== null &&
@@ -132,9 +160,11 @@ class Tree {
           let isInOrderSuccessorFound = false;
 
           while (!isInOrderSuccessorFound) {
+            // Find the leftmost node in the right subtree (in-order successor)
             if (tempVariableForInorderSuccessor.leftChild === null) {
               tempVariable.data = tempVariableForInorderSuccessor.data;
 
+              // If in-order successor has a right child, adjust the reference
               if (tempVariableForInorderSuccessor.rightChild !== null) {
                 tempVariableForInorderSuccessor =
                   tempVariableForInorderSuccessor.rightChild;
@@ -145,16 +175,18 @@ class Tree {
               this.removeDuplicate(inOrderSuccessor);
 
               isInOrderSuccessorFound = true;
-
               return;
             }
+
+            // Continue searching for the in-order successor
             if (tempVariableForInorderSuccessor.leftChild !== null) {
               tempVariableForInorderSuccessor =
                 tempVariableForInorderSuccessor.leftChild;
             }
           }
         }
-        //
+
+        // Case 4: Single child deletion (left child exists, right child does not)
         if (
           value === tempVariable.rightChild.data &&
           tempVariable.rightChild.leftChild !== null &&
@@ -165,6 +197,7 @@ class Tree {
           return;
         }
 
+        // Case 5: Single child deletion (right child exists, left child does not)
         if (
           value === tempVariable.rightChild.data &&
           tempVariable.rightChild.leftChild === null &&
@@ -176,32 +209,40 @@ class Tree {
         }
       }
 
-      //for leaf (no child nodes) deletion
-      if (
-        value === tempVariable.rightChild.data &&
-        tempVariable.rightChild.rightChild === null &&
-        tempVariable.rightChild.leftChild === null
-      ) {
-        tempVariable.rightChild = null;
-        isElementFound = true;
-        return;
+      // Case 6: Leaf node deletion (no children)
+      if(tempVariable.rightChild !== null) {
+        if (
+          value === tempVariable.rightChild.data &&
+          tempVariable.rightChild.rightChild === null &&
+          tempVariable.rightChild.leftChild === null
+        ) {
+          tempVariable.rightChild = null;
+          isElementFound = true;
+          return;
+        }
+      }
+      
+      if(tempVariable.leftChild !== null) {
+        if (
+          value === tempVariable.leftChild.data &&
+          tempVariable.leftChild.rightChild === null &&
+          tempVariable.leftChild.leftChild === null
+        ) {
+          tempVariable.leftChild = null;
+          isElementFound = true;
+          return;
+        }
+  
+        // Traverse the tree based on value comparison
+        if (value > tempVariable.data) {
+          tempVariable = tempVariable.rightChild;
+        } else if (value < tempVariable.data) {
+          tempVariable = tempVariable.leftChild;
+        }
+      }
       }
 
-      if (
-        value === tempVariable.leftChild.data &&
-        tempVariable.leftChild.rightChild === null &&
-        tempVariable.leftChild.leftChild === null
-      ) {
-        tempVariable.leftChild = null;
-        isElementFound = true;
-        return;
-      }
-      if (value > tempVariable.data) {
-        tempVariable = tempVariable.rightChild;
-      } else if (value < tempVariable.data) {
-        tempVariable = tempVariable.leftChild;
-      }
-    }
+     
   }
 
   find(value, tempVariable = this.root) {
@@ -307,34 +348,31 @@ class Tree {
   }
 
   rebalance() {
-
-    if(this.isBalanced()) {
+    if (this.isBalanced()) {
       return "This tree is already balanced";
+    } else {
+      let arr = preOrderForRebalanceMethod(this.root);
+
+      this.arr = arr;
+      this.root = buildTree(arr);
     }
-    else {
-        let arr = preOrderForRebalanceMethod(this.root);
-        
-        this.arr = arr;
-        this.root = buildTree(arr);
-    }
-}
+  }
 }
 
-function preOrderForRebalanceMethod(node,arr = []) {
-  if (node === null) { 
+function preOrderForRebalanceMethod(node, arr = []) {
+  if (node === null) {
   }
- 
+
   arr.push(node.data);
   if (node.leftChild !== null) {
-    preOrderForRebalanceMethod(node.leftChild,arr);
+    preOrderForRebalanceMethod(node.leftChild, arr);
   }
   if (node.rightChild !== null) {
-    preOrderForRebalanceMethod(node.rightChild,arr);
+    preOrderForRebalanceMethod(node.rightChild, arr);
   }
 
- return arr;
+  return arr;
 }
-
 
 function preOrder(node, callback) {
   if (typeof callback !== "function") {
@@ -396,9 +434,9 @@ function callback(newDiscoveredNode) {
   console.log(`printing discovered node ${newDiscoveredNode.data}`);
 }
 
-function callbackForRebalance(node,arr) {
-    arr.push(node.data);
-};
+function callbackForRebalance(node, arr) {
+  arr.push(node.data);
+}
 
 function buildTree(array) {
   // sorting the array as well as removing the duplicates for creating a bst later
@@ -451,17 +489,23 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
+
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([
-  20, 10,22,34, 112, 5,
-]);
+let newTree = new Tree([4]);
 
-console.log(prettyPrint(newTree.root));
-console.log(newTree.isBalanced());
-newTree.deleteItem(5);
-newTree.deleteItem(10);
-console.log(newTree.isBalanced());
-console.log(newTree.rebalance())
-console.log(prettyPrint(newTree.root));
+prettyPrint(newTree.root);
+console.log(newTree.root);
+
+console.log("-----------------");
+newTree.deleteItem(4);
+newTree.insert(4);
+newTree.insert(5);
+newTree.insert(6)
+newTree.insert(2)
+newTree.deleteItem(2);
+console.log(newTree.isBalanced())
+
+
+prettyPrint(newTree.root);
