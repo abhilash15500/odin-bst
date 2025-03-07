@@ -87,7 +87,8 @@ class Tree {
         tempVariable.rightChild.leftChild === null &&
         tempVariable.rightChild.rightChild !== null
       ) {
-        tempVariable.rightChild = tempVariable.leftChild.rightChild;
+        // tempVariable.rightChild = tempVariable.leftChild.rightChild;
+        tempVariable.rightChild = tempVariable.rightChild.rightChild;
 
         isDuplicateRemoved = true;
         return;
@@ -144,7 +145,9 @@ class Tree {
           // Find the leftmost node in the right subtree (in-order successor)
           if (tempVariableForInorderSuccessor.leftChild === null) {
             this.root.data= tempVariableForInorderSuccessor.data;
-
+            this.removeDuplicate(tempVariableForInorderSuccessor.data)
+            return;
+          
             // If in-order successor has a right child, adjust the reference
             if (tempVariableForInorderSuccessor.rightChild !== null) {
               tempVariableForInorderSuccessor =
@@ -239,7 +242,10 @@ class Tree {
           while (!isInOrderSuccessorFound) {
             // Find the leftmost node in the right subtree (in-order successor)
             if (tempVariableForInorderSuccessor.leftChild === null) {
+              // tempVariable.data = tempVariableForInorderSuccessor.data;
               tempVariable.data = tempVariableForInorderSuccessor.data;
+            this.removeDuplicate(tempVariableForInorderSuccessor.data);
+            return;
 
               // If in-order successor has a right child, adjust the reference
               if (tempVariableForInorderSuccessor.rightChild !== null) {
@@ -253,6 +259,8 @@ class Tree {
 
               isInOrderSuccessorFound = true;
               return;
+
+              
             }
 
             // Continue searching for the in-order successor
@@ -595,7 +603,9 @@ console.log("-----------------");
 newTree.deleteItem(34)
 
 newTree.deleteItem(43);
-
+newTree.deleteItem(7);
+newTree.deleteItem(75);
+newTree.deleteItem(18.7)
 console.log(newTree.isBalanced())
 prettyPrint(newTree.root);
 
