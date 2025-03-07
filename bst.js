@@ -13,22 +13,26 @@ class Tree {
   }
 
   insert(value, tempVariable = this.root) {
-   
-    let valueExists = this.findBooleanValueForOtherMethods(value);
 
-    if (valueExists === true) {
-      throw new Error("The value already exists in the tree");
-    } else if (valueExists === false) {
-      console.log(
-        `Inserting the value ${value} with insert method in the tree`
-      );
-    }
+    
     // Proceed with insertion
 
-    if (tempVariable === null) {
+   
+
+    if (this.root === null) {
       this.root = new Node(value);
       return;
     }
+
+//check if value is present or not
+    let valueExists = this.findBooleanValueForOtherMethods(value);
+    // if (valueExists === true) {
+    //   throw new Error("The value already exists in the tree");
+    // } else if (valueExists === false) {
+    //   console.log(
+    //     `Inserting the value ${value} with insert method in the tree`
+    //   );
+    // }
     //fix this above code  asap ------------------- AAAAAAAAAAAA
 
     if (tempVariable.rightChild === null && tempVariable.leftChild === null) {
@@ -48,10 +52,24 @@ class Tree {
 
     if (value > tempVariable.data) {
       tempVariable = tempVariable.rightChild;
-      this.insert(value, tempVariable);
+      if(valueExists) {
+        throw new Error("value already present");
+      }
+      else {
+        
+        this.insert(value, tempVariable);
+      }
+      
     } else {
       tempVariable = tempVariable.leftChild;
-      this.insert(value, tempVariable);
+      if(valueExists) {
+        throw new Error("value already present");
+      }
+      else {
+        this.insert(value, tempVariable);
+        
+      }
+      
     }
   }
 
@@ -116,6 +134,15 @@ class Tree {
     //
 
     let isElementFound = false;
+
+    if(tempVariable.leftChild !== null && tempVariable.rightChild === null && tempVariable.data === value){
+        this.root = tempVariable.leftChild;
+        return;
+    }
+    if(tempVariable.leftChild === null && tempVariable.rightChild !== null && tempVariable.data === value){
+      this.root = tempVariable.rightChild;
+      return;
+  }
 
     // inorder successor for root node
 
@@ -429,6 +456,8 @@ class Tree {
     }
   }
 
+ 
+
   rebalance() {
     if (this.isBalanced()) {
       return "This tree is already balanced";
@@ -574,24 +603,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([
-  4, 5, 1, 5, 66, 33, 74, 43, 75, 346, 7, 18.7, 466, 3343, 6530, 1, 30, 34, 62,
-  29, 2,
+let newTree = new Tree([  
 ]);
 
 prettyPrint(newTree.root);
 
-// console.log(newTree.root);
-
 console.log("-----------------");
 
-newTree.deleteItem(34);
 
-newTree.deleteItem(43);
-newTree.deleteItem(7);
-newTree.deleteItem(75);
-newTree.deleteItem(18.7);
-// newTree.insert(555);
-
-console.log(newTree.isBalanced());
+// console.log(newTree.isBalanced());
 prettyPrint(newTree.root);
