@@ -13,23 +13,19 @@ class Tree {
   }
 
   insert(value, tempVariable = this.root) {
-      
-  if(this.findBooleanValueForOtherMethods(value) === true) {
-    throw new Error("The value already exists in the tree")
-    
-  }
-  else if (this.findBooleanValueForOtherMethods(value) === false )
-{
-  console.log(`Inserting the value ${value} with insert method in the tree`);
-  
-}   
-// Proceed with insertion
+   
+    let valueExists = this.findBooleanValueForOtherMethods(value);
 
+    if (valueExists === true) {
+      throw new Error("The value already exists in the tree");
+    } else if (valueExists === false) {
+      console.log(
+        `Inserting the value ${value} with insert method in the tree`
+      );
+    }
+    // Proceed with insertion
 
-  
-    //fix this asap
-    
-    if(tempVariable === null) {
+    if (tempVariable === null) {
       this.root = new Node(value);
       return;
     }
@@ -44,13 +40,12 @@ class Tree {
       return;
     }
 
-    if(value > tempVariable.data && tempVariable.rightChild === null) {
-        tempVariable.rightChild = new Node(value);
-    }
-    else if (value < tempVariable.data && tempVariable.leftChild === null) {
+    if (value > tempVariable.data && tempVariable.rightChild === null) {
+      tempVariable.rightChild = new Node(value);
+    } else if (value < tempVariable.data && tempVariable.leftChild === null) {
       tempVariable.leftChild = new Node(value);
     }
-    
+
     if (value > tempVariable.data) {
       tempVariable = tempVariable.rightChild;
       this.insert(value, tempVariable);
@@ -112,25 +107,22 @@ class Tree {
   }
 
   deleteItem(value, tempVariable = this.root) {
-//checking if the element exists or not 
-    if(this.findBooleanValueForOtherMethods(value) === true) {
+    //checking if the element exists or not
+    if (this.findBooleanValueForOtherMethods(value) === true) {
       console.log(`deleting the value ${value} with delete method in the tree`);
-      
-      
+    } else if (this.findBooleanValueForOtherMethods(value) === false) {
+      throw new Error("The value doesnt exists in the tree");
     }
-    else if (this.findBooleanValueForOtherMethods(value) === false )
-  {
-    throw new Error("The value doesnt exists in the tree")
-    
-  }   
-//
-
+    //
 
     let isElementFound = false;
 
-    // inorder successor for root node 
-    
-    if(tempVariable.rightChild !== null && tempVariable.leftChild !== null && tempVariable.data === value
+    // inorder successor for root node
+
+    if (
+      tempVariable.rightChild !== null &&
+      tempVariable.leftChild !== null &&
+      tempVariable.data === value
     ) {
       if (
         value === tempVariable.data &&
@@ -144,10 +136,10 @@ class Tree {
         while (!isInOrderSuccessorFound) {
           // Find the leftmost node in the right subtree (in-order successor)
           if (tempVariableForInorderSuccessor.leftChild === null) {
-            this.root.data= tempVariableForInorderSuccessor.data;
-            this.removeDuplicate(tempVariableForInorderSuccessor.data)
+            this.root.data = tempVariableForInorderSuccessor.data;
+            this.removeDuplicate(tempVariableForInorderSuccessor.data);
             return;
-          
+
             // If in-order successor has a right child, adjust the reference
             if (tempVariableForInorderSuccessor.rightChild !== null) {
               tempVariableForInorderSuccessor =
@@ -169,38 +161,33 @@ class Tree {
           }
         }
       }
-
-
     }
-      
-    
+
     // it ends here
 
     while (!isElementFound) {
-    
-    
-    
+      if (
+        tempVariable.rightChild === null &&
+        tempVariable.leftChild === null &&
+        tempVariable.data === value
+      ) {
+        this.root = null;
 
-    if(tempVariable.rightChild === null && tempVariable.leftChild === null && tempVariable.data === value
-    ) {
-      this.root = null;
-      
-      return;
-    }
-     
+        return;
+      }
+
       // If reached a leaf node and the element is not found, throw an error
       if (
         tempVariable.leftChild === null &&
         tempVariable.rightChild === null &&
-        isElementFound === false 
+        isElementFound === false
       ) {
         throw new Error("Element not found");
       }
 
-      if(tempVariable === null) {
-        throw new Error("The tree is empty!")
+      if (tempVariable === null) {
+        throw new Error("The tree is empty!");
       }
-      
 
       // Check if left child exists
       if (tempVariable.leftChild !== null) {
@@ -244,8 +231,8 @@ class Tree {
             if (tempVariableForInorderSuccessor.leftChild === null) {
               // tempVariable.data = tempVariableForInorderSuccessor.data;
               tempVariable.data = tempVariableForInorderSuccessor.data;
-            this.removeDuplicate(tempVariableForInorderSuccessor.data);
-            return;
+              this.removeDuplicate(tempVariableForInorderSuccessor.data);
+              return;
 
               // If in-order successor has a right child, adjust the reference
               if (tempVariableForInorderSuccessor.rightChild !== null) {
@@ -259,8 +246,6 @@ class Tree {
 
               isInOrderSuccessorFound = true;
               return;
-
-              
             }
 
             // Continue searching for the in-order successor
@@ -295,7 +280,7 @@ class Tree {
       }
 
       // Case 6: Leaf node deletion (no children)
-      if(tempVariable.rightChild !== null) {
+      if (tempVariable.rightChild !== null) {
         if (
           value === tempVariable.rightChild.data &&
           tempVariable.rightChild.rightChild === null &&
@@ -306,8 +291,8 @@ class Tree {
           return;
         }
       }
-      
-      if(tempVariable.leftChild !== null) {
+
+      if (tempVariable.leftChild !== null) {
         if (
           value === tempVariable.leftChild.data &&
           tempVariable.leftChild.rightChild === null &&
@@ -317,7 +302,7 @@ class Tree {
           isElementFound = true;
           return;
         }
-  
+
         // Traverse the tree based on value comparison
         if (value > tempVariable.data) {
           tempVariable = tempVariable.rightChild;
@@ -325,9 +310,7 @@ class Tree {
           tempVariable = tempVariable.leftChild;
         }
       }
-      }
-
-     
+    }
   }
 
   find(value, tempVariable = this.root) {
@@ -355,7 +338,7 @@ class Tree {
         tempVariable = tempVariable.leftChild;
       }
     }
-   return false;
+    return false;
   }
 
   levelOrder(callback) {
@@ -588,11 +571,13 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([4,5,1,5,66,33,74,43,75,346,7,18.7,466,3343,6530,1,30,34,62,29,2]);
+let newTree = new Tree([
+  4, 5, 1, 5, 66, 33, 74, 43, 75, 346, 7, 18.7, 466, 3343, 6530, 1, 30, 34, 62,
+  29, 2,
+]);
 
 prettyPrint(newTree.root);
 
@@ -600,12 +585,13 @@ prettyPrint(newTree.root);
 
 console.log("-----------------");
 
-newTree.deleteItem(34)
+newTree.deleteItem(34);
 
 newTree.deleteItem(43);
 newTree.deleteItem(7);
 newTree.deleteItem(75);
-newTree.deleteItem(18.7)
-console.log(newTree.isBalanced())
-prettyPrint(newTree.root);
+newTree.deleteItem(18.7);
+// newTree.insert(555);
 
+console.log(newTree.isBalanced());
+prettyPrint(newTree.root);
