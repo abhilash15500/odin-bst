@@ -444,16 +444,39 @@ class Tree {
     }
   }
 
-  isBalanced() {
-    let leftSubTreeHeight = this.height(this.root.leftChild);
-    let rightSubTreeHeight = this.height(this.root.rightChild);
+  isBalanced(node = this.root) {
 
+    if(node === null) {
+      return true;
+    }
+
+
+
+    let leftSubTreeHeight = this.height(node.leftChild);
+    let rightSubTreeHeight = this.height(node.rightChild);
     let differenceOfHeight = Math.abs(leftSubTreeHeight - rightSubTreeHeight);
+
     if (differenceOfHeight > 1) {
       return false;
     } else {
-      return true;
+        if(node.leftChild !== null) {
+               if( this.isBalanced(node.leftChild) === false) {
+                  return false
+               };
+        }
+        if (node.rightChild !== null) {
+            if( this.isBalanced(node.rightChild) === false) {
+              return false;
+            };
+        }
+        
+        if(node.leftChild !== null && node.rightChild !== null) {
+          
+          return true;
+        }
+        
     }
+      
   }
 
  
@@ -603,13 +626,17 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([  
-]);
+let newTree = new Tree([4]);
 
 prettyPrint(newTree.root);
+newTree.insert(3)
+newTree.insert(2)
+newTree.insert(1)
+newTree.insert(5)
+newTree.deleteItem(1);
+newTree.insert(1);
 
-console.log("-----------------");
 
+console.log(newTree.isBalanced());
 
-// console.log(newTree.isBalanced());
 prettyPrint(newTree.root);
