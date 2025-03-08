@@ -13,27 +13,14 @@ class Tree {
   }
 
   insert(value, tempVariable = this.root) {
-
-    
     // Proceed with insertion
-
-   
-
     if (this.root === null) {
       this.root = new Node(value);
       return;
     }
 
-//check if value is present or not
+    //check if value is present or not
     let valueExists = this.findBooleanValueForOtherMethods(value);
-    // if (valueExists === true) {
-    //   throw new Error("The value already exists in the tree");
-    // } else if (valueExists === false) {
-    //   console.log(
-    //     `Inserting the value ${value} with insert method in the tree`
-    //   );
-    // }
-    //fix this above code  asap ------------------- AAAAAAAAAAAA
 
     if (tempVariable.rightChild === null && tempVariable.leftChild === null) {
       if (value > tempVariable.data) {
@@ -52,24 +39,18 @@ class Tree {
 
     if (value > tempVariable.data) {
       tempVariable = tempVariable.rightChild;
-      if(valueExists) {
+      if (valueExists) {
         throw new Error("value already present");
-      }
-      else {
-        
+      } else {
         this.insert(value, tempVariable);
       }
-      
     } else {
       tempVariable = tempVariable.leftChild;
-      if(valueExists) {
+      if (valueExists) {
         throw new Error("value already present");
-      }
-      else {
+      } else {
         this.insert(value, tempVariable);
-        
       }
-      
     }
   }
 
@@ -135,14 +116,22 @@ class Tree {
 
     let isElementFound = false;
 
-    if(tempVariable.leftChild !== null && tempVariable.rightChild === null && tempVariable.data === value){
-        this.root = tempVariable.leftChild;
-        return;
+    if (
+      tempVariable.leftChild !== null &&
+      tempVariable.rightChild === null &&
+      tempVariable.data === value
+    ) {
+      this.root = tempVariable.leftChild;
+      return;
     }
-    if(tempVariable.leftChild === null && tempVariable.rightChild !== null && tempVariable.data === value){
+    if (
+      tempVariable.leftChild === null &&
+      tempVariable.rightChild !== null &&
+      tempVariable.data === value
+    ) {
       this.root = tempVariable.rightChild;
       return;
-  }
+    }
 
     // inorder successor for root node
 
@@ -419,8 +408,6 @@ class Tree {
     let depthCount = 0;
     let tempVariable = this.root;
     while (!isDepthFound) {
-      console.log(node);
-
       if (node === this.root) {
         isDepthFound = true;
         return depthCount;
@@ -445,12 +432,9 @@ class Tree {
   }
 
   isBalanced(node = this.root) {
-
-    if(node === null) {
+    if (node === null) {
       return true;
     }
-
-
 
     let leftSubTreeHeight = this.height(node.leftChild);
     let rightSubTreeHeight = this.height(node.rightChild);
@@ -459,27 +443,11 @@ class Tree {
     if (differenceOfHeight > 1) {
       return false;
     } else {
-        if(node.leftChild !== null) {
-               if( this.isBalanced(node.leftChild) === false) {
-                  return false
-               };
-        }
-        if (node.rightChild !== null) {
-            if( this.isBalanced(node.rightChild) === false) {
-              return false;
-            };
-        }
-        
-        if(node.leftChild !== null && node.rightChild !== null) {
-          
-          return true;
-        }
-        
+      return (
+        this.isBalanced(node.leftChild) && this.isBalanced(node.rightChild)
+      );
     }
-      
   }
-
- 
 
   rebalance() {
     if (this.isBalanced()) {
@@ -626,17 +594,40 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // initializing the application!!!!!!!!
 //testing
 
-let newTree = new Tree([4]);
+let newTree = new Tree([
+  50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45, 55, 65, 75, 90,
+]);
+
+newTree.isBalanced();
+
+preOrder(newTree);
+
+preOrder(newTree.root);
+
+preOrder(newTree.root);
+
+preOrder(newTree.root, callback);
+
+inOrder(newTree.root, callback);
+
+postOrder(newTree.root, callback);
+
+newTree.insert(101);
+
+newTree.insert(102);
+
+newTree.insert(103);
+
+newTree.isBalanced();
+
+newTree.rebalance();
 
 prettyPrint(newTree.root);
-newTree.insert(3)
-newTree.insert(2)
-newTree.insert(1)
-newTree.insert(5)
-newTree.deleteItem(1);
-newTree.insert(1);
 
+newTree.isBalanced();
 
-console.log(newTree.isBalanced());
+postOrder(newTree.root, callback);
 
-prettyPrint(newTree.root);
+inOrder(newTree.root, callback);
+
+preOrder(newTree.root, callback);
