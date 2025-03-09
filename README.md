@@ -1,7 +1,5 @@
 # odin-bst
 
-# Binary Search Tree in JavaScript  
-
 ## Overview
 This project is a simple implementation of a Binary Search Tree (BST) in JavaScript.
 
