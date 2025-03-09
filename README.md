@@ -6,7 +6,7 @@ This project is a simple implementation of a Binary Search Tree (BST) in JavaScr
 ## Features
 - **Insertion**: Adds nodes while maintaining BST properties.
 - **Deletion**: Removes nodes and adjusts the tree accordingly.
-- **Find**: Searches for a specific value in the tree.
+- **Find**: Searches for a specific node of the value in the tree.
 - **Inorder Traversal**: Visits nodes in sorted order (Left, Root, Right).
 - **Preorder Traversal**: Visits the root node first, then left and right subtrees.
 - **Postorder Traversal**: Visits left and right subtrees first, then the root node.
